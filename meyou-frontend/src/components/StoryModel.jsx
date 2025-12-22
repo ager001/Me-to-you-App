@@ -1,4 +1,4 @@
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, TextIcon } from 'lucide-react';
 import React, { useState } from 'react'
 
 const StoryModel = ({setShowModel, fetchStories}) => {
@@ -45,6 +45,35 @@ const StoryModel = ({setShowModel, fetchStories}) => {
                 onChange={(e)=>setText(e.target.value)} value={text}/>
             )}
 
+            {
+              mode === 'media' && previewUrl && (
+                  media?.type.startsWith('image') ? (
+                    <img src={previewUrl} alt="" className='object-contain
+                    max-h-full' />
+                  ) : (
+                    <video src={previewUrl} className='object-contain
+                    max-h-full'/>
+                  )
+              )
+            }
+
+        </div>
+
+        <div className='flex mt-4 gap-2'>
+              {bgColors.map((color)=>(
+                  <button key={color} className='w-6 h-6 rounded-full ring
+                  cursor-pointer' style={{backgroundColor: color}} onClick={()=>
+                    setBackground(color)
+                  }/>
+              ))}
+        </div>
+
+        <div className='flex gap-2 mt-4'>
+            <button onClick={()=> {setMode('text'); setMedia(null)
+              setPreviewUrl(null)}} className={`flex-1 flex items-center justify-center gap-2
+              p-2 rounded ${mode === 'text' ? "bg-white text-black" : "bg-zinc-800" }`}>
+              <TextIcon size={50}/> Text
+            </button>
         </div>
 
       </div>
