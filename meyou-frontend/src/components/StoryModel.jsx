@@ -1,5 +1,6 @@
-import { ArrowLeft, TextIcon } from 'lucide-react';
+import { ArrowLeft, Sparkle, TextIcon, Upload } from 'lucide-react';
 import React, { useState } from 'react'
+import toast from 'react-hot-toast';
 
 const StoryModel = ({setShowModel, fetchStories}) => {
 
@@ -7,7 +8,7 @@ const StoryModel = ({setShowModel, fetchStories}) => {
         "#ca8a04", "#0d9488"]
 
     const [mode, setMode] = useState("text");
-    const[backround, setBackground] = useState(bgColors[0]);
+    const[background, setBackground] = useState(bgColors[0]);
     const [text, setText] = useState("");
     const [media, setMedia] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(null);
@@ -37,7 +38,7 @@ const StoryModel = ({setShowModel, fetchStories}) => {
         </div>
 
         <div className='rounded-lg h-96 flex items-center justify-center
-        relative' style={{backgroundColor: backround}}>
+        relative' style={{backgroundColor: background}}>
 
             {mode === "text" && (
                 <textarea className='bg-transparent text-white w-full h-full
@@ -71,10 +72,28 @@ const StoryModel = ({setShowModel, fetchStories}) => {
         <div className='flex gap-2 mt-4'>
             <button onClick={()=> {setMode('text'); setMedia(null)
               setPreviewUrl(null)}} className={`flex-1 flex items-center justify-center gap-2
-              p-2 rounded ${mode === 'text' ? "bg-white text-black" : "bg-zinc-800" }`}>
+              p-2 rounded ${mode === 'text' ? "bg-white text-black" : "bg-zinc-800" }
+              cursor-pointer`}>
               <TextIcon size={50}/> Text
             </button>
+
+            <label className={`flex-1 flex items-center justify-center gap-2
+              p-2 rounded cursor pointer ${mode === 'media' ? "bg-white text-black" : "bg-zinc-800" } cursor-pointer`}>
+              <input onChange={(e)=>{handleMediaUpload(e); setMode('media')}} type="file" accept='image/*, video/*' className='hidden'/>
+              <Upload size={18}/> Photo/Video
+            </label>
         </div>
+        {/*Create story button, this makes a post in our app */}
+        <button  className='flex items-center justify-center gap-2 text-white
+        py-3 mt-4 w-full rounded bg-linear-to-r from-indigo-500 to-purple-600
+        hover:from-indigo-600 hover:to-purple-700 active:scale-95 transition
+        cursor-pointer' onClick={()=> toast.promise(handleCreateStory(), {
+          loading: 'Creating Story...',
+          success: 'Story Created!',
+          error: 'Error creating story'
+        })}>
+          <Sparkle size={18}/> Create Story
+        </button>
 
       </div>
     </div>
